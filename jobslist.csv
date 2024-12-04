@@ -1,5 +1,4 @@
-("job, company, location, latitude, longitude")
-jobs = [
+
     ("Software Engineer", "Google", "London", 51.5074, -0.1278),
     ("Data Analyst", "Facebook", "Dublin", 53.3498, -6.2603),
     ("Web Developer", "Amazon", "Seattle", 47.6062, -122.3321),
