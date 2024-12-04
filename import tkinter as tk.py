@@ -39,3 +39,19 @@ def generate_map(jobs):
 
     # Open the map in the default web browser
     webbrowser.open(f"file://{map_path}")
+    
+    # Main function
+if __name__ == "__main__":
+    # Load job data from CSV file
+    job_data = load_job_data("jobs.csv")
+
+    # Generate and display the map
+    generate_map(job_data)
+    
+# File handling
+def save_job(job_list):
+    """Save job data to a CSV file."""
+    with open("jobs.csv", "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Job Title", "Company", "Location"])
+        writer.writerows(job_list)
