@@ -107,3 +107,34 @@ def add_job():
     if not (title and company and location):
         messagebox.showerror("Error", "All fields are required!")
         return
+
+
+    job_data.append([title, company, location])
+    save_job(job_data)
+    display_jobs(job_data)
+    title_entry.delete(0, tk.END)
+    company_entry.delete(0, tk.END)
+    location_entry.delete(0, tk.END)
+    messagebox.showinfo("Success", "Job added successfully!")
+
+
+# Load job data
+job_data = load_jobs()
+
+# GUI setup
+root = tk.Tk()
+root.title("Job Search Application")
+
+# Frames
+frame_top = tk.Frame(root)
+frame_top.pack(pady=10)
+
+frame_bottom = tk.Frame(root)
+frame_bottom.pack(pady=10)
+
+# Search bar
+search_label = tk.Label(frame_top, text="Search by Job Title:")
+search_label.grid(row=0, column=0, padx=5)
+
+search_entry = tk.Entry(frame_top)
+search_entry.grid(row=0, column=1, padx=5)
