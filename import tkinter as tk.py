@@ -80,3 +80,30 @@ def display_jobs(jobs):
     tree.delete(*tree.get_children())
     for row in jobs:
         tree.insert("", "end", values=row)
+
+def search():
+    """Search for jobs by the given keyword."""
+    keyword = search_entry.get().strip()
+    if not keyword:
+        messagebox.showwarning("Warning", "Enter a search keyword!")
+        return
+    results = search_jobs(job_data, keyword)
+    if results:
+        display_jobs(results)
+    else:
+        messagebox.showinfo("No Results", "No jobs found for your search.")
+
+def sort():
+    """Sort jobs by location and display them."""
+    sorted_jobs = sort_jobs(job_data)
+    display_jobs(sorted_jobs)
+
+def add_job():
+    """Add a new job to the list."""
+    title = title_entry.get().strip()
+    company = company_entry.get().strip()
+    location = location_entry.get().strip()
+
+    if not (title and company and location):
+        messagebox.showerror("Error", "All fields are required!")
+        return
