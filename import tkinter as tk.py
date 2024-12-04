@@ -1,5 +1,5 @@
 import csv
-import for tkinter as tk
+import tkinter as tk
 from tkinter import ttk, messagebox
 import folium
 import csv
