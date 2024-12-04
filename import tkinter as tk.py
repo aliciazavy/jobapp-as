@@ -138,3 +138,44 @@ search_label.grid(row=0, column=0, padx=5)
 
 search_entry = tk.Entry(frame_top)
 search_entry.grid(row=0, column=1, padx=5)
+
+search_button = tk.Button(frame_top, text="Search", command=search)
+search_button.grid(row=0, column=2, padx=5)
+
+sort_button = tk.Button(frame_top, text="Sort by Location", command=sort)
+sort_button.grid(row=0, column=3, padx=5)
+
+# Job list display
+columns = ("Job Title", "Company", "Location")
+tree = ttk.Treeview(root, columns=columns, show="headings")
+for col in columns:
+    tree.heading(col, text=col)
+    tree.column(col, width=150, anchor="center")
+tree.pack(pady=10)
+
+# Add job form
+title_label = tk.Label(frame_bottom, text="Job Title:")
+title_label.grid(row=0, column=0, padx=5, pady=5)
+
+title_entry = tk.Entry(frame_bottom)
+title_entry.grid(row=0, column=1, padx=5, pady=5)
+
+company_label = tk.Label(frame_bottom, text="Company:")
+company_label.grid(row=1, column=0, padx=5, pady=5)
+
+company_entry = tk.Entry(frame_bottom)
+company_entry.grid(row=1, column=1, padx=5, pady=5)
+
+location_label = tk.Label(frame_bottom, text="Location:")
+location_label.grid(row=2, column=0, padx=5, pady=5)
+
+location_entry = tk.Entry(frame_bottom)
+location_entry.grid(row=2, column=1, padx=5, pady=5)
+
+add_button = tk.Button(frame_bottom, text="Add Job", command=add_job)
+add_button.grid(row=3, column=0, columnspan=2, pady=10)
+
+# Display initial jobs
+display_jobs(job_data)
+
+root.mainloop()
