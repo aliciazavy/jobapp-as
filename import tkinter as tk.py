@@ -10,7 +10,7 @@ import os
 def load_jobs():
     """Load job data from a CSV file."""
     try:
-        with open("jobslist.csv", "r") as file:
+        with open("jobs.csv", "r") as file:
             reader = csv.reader(file)
             return list(reader)[1:]  # Skip header row
     except FileNotFoundError:
@@ -20,22 +20,22 @@ def load_jobs():
 # Save job data to CSV
 def save_job(job_list):
     """Save job data to a CSV file."""
-    with open("jobslist.csv", "w", newline="") as file:
+    with open("jobs.csv", "w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["Job Title", "Company", "Location", "Latitude", "Longitude"])
         writer.writerows(job_list)
 
 
-# Search function
+# Search function (case-insensitive and handle spaces)
 def search_jobs(jobs, keyword):
-    """Search for jobs by keyword in the title."""
-    return [job for job in jobs if keyword.lower() in job[0].lower()]
+    """Search for jobs by keyword in the title or location."""
+    return [job for job in jobs if keyword.lower() in job[0].lower() or keyword.lower() in job[2].lower()]
 
 
-# Sort jobs by location
+# Sort jobs by location (case-insensitive)
 def sort_jobs(jobs):
     """Sort jobs alphabetically by location."""
-    return sorted(jobs, key=lambda x: x[2])
+    return sorted(jobs, key=lambda x: x[2].lower())  # Sort by the location field
 
 
 # Display jobs in the treeview
@@ -52,14 +52,21 @@ def generate_map(jobs):
 
     for job in jobs:
         title, company, location, lat, lon = job
-        folium.Marker(
-            location=[float(lat), float(lon)],
-            popup=f"{title} at {company} ({location})",
-        ).add_to(job_map)
+        try:
+            folium.Marker(
+                location=[float(lat), float(lon)],
+                popup=f"{title} at {company} ({location})",
+            ).add_to(job_map)
+        except ValueError:
+            print(f"Invalid coordinates for job: {title} at {company}")
 
     map_file = "job_map.html"
     job_map.save(map_file)
-    webbrowser.open(f"file://{os.path.abspath(map_file)}")
+
+    # Get the absolute path and open the map file
+    map_path = os.path.abspath(map_file)
+    print(f"Map saved to: {map_path}")
+    webbrowser.open(f"file://{map_path}")
 
 
 # Search button functionality
@@ -119,7 +126,7 @@ frame_bottom = tk.Frame(root)
 frame_bottom.pack(pady=10)
 
 # Search bar
-search_label = tk.Label(frame_top, text="Search by Job Title:")
+search_label = tk.Label(frame_top, text="Search by Job Title or Location:")
 search_label.grid(row=0, column=0, padx=5)
 
 search_entry = tk.Entry(frame_top)
@@ -177,4 +184,3 @@ add_button.grid(row=5, column=0, columnspan=2, pady=10)
 display_jobs(job_data)
 
 root.mainloop()
-
