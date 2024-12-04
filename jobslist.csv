@@ -1,4 +1,3 @@
-"Job Title", "Company", "Location", "Latitude", "Longitude"
 "Software Engineer", "Google", "London", 51.5074, -0.1278
 "Back-End Developer", "Stripe", "London", 51.5074, -0.1278
 "Mobile App Developer", "Snapchat", "Los Angeles", 34.0522, -118.2437
@@ -82,4 +81,4 @@
 "Tour Guide", "Explore Tours", "Paris", 48.8566, 2.3522
 "Florist", "Bloom Creations", "Amsterdam", 52.3676, 4.9041
 "Courier", "Express Deliveries", "Chicago", 41.8781, -87.6298
-"
+"Electrician", "PowerPro Services", "Los Angeles", 34.0522, -118.2437
