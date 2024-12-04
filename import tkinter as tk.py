@@ -10,7 +10,7 @@ import os
 def load_jobs():
     """Load job data from a CSV file."""
     try:
-        with open("jobs.csv", "r") as file:
+        with open("jobslist.csv", "r") as file:
             reader = csv.reader(file)
             return list(reader)[1:]  # Skip header row
     except FileNotFoundError:
@@ -20,7 +20,7 @@ def load_jobs():
 # Save job data to CSV
 def save_job(job_list):
     """Save job data to a CSV file."""
-    with open("jobs.csv", "w", newline="") as file:
+    with open("jobslist.csv", "w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["Job Title", "Company", "Location", "Latitude", "Longitude"])
         writer.writerows(job_list)
