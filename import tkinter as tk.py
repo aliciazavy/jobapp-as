@@ -2,10 +2,9 @@ import csv
 import tkinter as tk
 from tkinter import ttk, messagebox
 import folium
-import csv
 import webbrowser
 import os
-        
+
 def load_job_data(filename):
     job_data = []
     with open(filename, 'r') as file:
@@ -40,20 +39,12 @@ def generate_map(jobs):
     # Open the map in the default web browser
     webbrowser.open(f"file://{map_path}")
 
-# Main function
-if __name__ == "__main__":
-    # Load job data from CSV file
-    job_data = load_job_data("jobslist.csv")
-
-    # Generate and display the map
-    generate_map(job_data)
-    
 # File handling
 def save_job(job_list):
     """Save job data to a CSV file."""
     with open("jobslist.csv", "w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["Job Title", "Company", "Location"])
+        writer.writerow(["Job Title", "Company", "Location", "Latitude", "Longitude"])
         writer.writerows(job_list)
 
 def load_jobs():
@@ -67,12 +58,12 @@ def load_jobs():
 
 # Search and sort functions
 def search_jobs(jobs, keyword):
-    """Search for jobs by keyword in the title."""
-    return [job for job in jobs if keyword.lower() in job[0].lower()]
+    """Search for jobs by keyword in the title or location."""
+    return [job for job in jobs if keyword.lower() in job[0].lower() or keyword.lower() in job[2].lower()]
 
 def sort_jobs(jobs):
     """Sort jobs alphabetically by location."""
-    return sorted(jobs, key=lambda x: x[2])
+    return sorted(jobs, key=lambda x: x[2].strip().lower())  # Location is in the 3rd column (index 2)
 
 # GUI functionality
 def display_jobs(jobs):
@@ -103,17 +94,21 @@ def add_job():
     title = title_entry.get().strip()
     company = company_entry.get().strip()
     location = location_entry.get().strip()
+    latitude = lat_entry.get().strip()
+    longitude = lon_entry.get().strip()
 
-    if not (title and company and location):
+    if not (title and company and location and latitude and longitude):
         messagebox.showerror("Error", "All fields are required!")
         return
 
-    job_data.append([title, company, location])
+    job_data.append([title, company, location, latitude, longitude])
     save_job(job_data)
     display_jobs(job_data)
     title_entry.delete(0, tk.END)
     company_entry.delete(0, tk.END)
     location_entry.delete(0, tk.END)
+    lat_entry.delete(0, tk.END)
+    lon_entry.delete(0, tk.END)
     messagebox.showinfo("Success", "Job added successfully!")
 
 # Load job data
@@ -131,7 +126,7 @@ frame_bottom = tk.Frame(root)
 frame_bottom.pack(pady=10)
 
 # Search bar
-search_label = tk.Label(frame_top, text="Search by Job Title:")
+search_label = tk.Label(frame_top, text="Search by Job Title or Location:")
 search_label.grid(row=0, column=0, padx=5)
 
 search_entry = tk.Entry(frame_top)
@@ -144,7 +139,7 @@ sort_button = tk.Button(frame_top, text="Sort by Location", command=sort)
 sort_button.grid(row=0, column=3, padx=5)
 
 # Job list display
-columns = ("Job Title", "Company", "Location")
+columns = ("Job Title", "Company", "Location", "Latitude", "Longitude")
 tree = ttk.Treeview(root, columns=columns, show="headings")
 for col in columns:
     tree.heading(col, text=col)
@@ -170,10 +165,25 @@ location_label.grid(row=2, column=0, padx=5, pady=5)
 location_entry = tk.Entry(frame_bottom)
 location_entry.grid(row=2, column=1, padx=5, pady=5)
 
+lat_label = tk.Label(frame_bottom, text="Latitude:")
+lat_label.grid(row=3, column=0, padx=5, pady=5)
+
+lat_entry = tk.Entry(frame_bottom)
+lat_entry.grid(row=3, column=1, padx=5, pady=5)
+
+lon_label = tk.Label(frame_bottom, text="Longitude:")
+lon_label.grid(row=4, column=0, padx=5, pady=5)
+
+lon_entry = tk.Entry(frame_bottom)
+lon_entry.grid(row=4, column=1, padx=5, pady=5)
+
 add_button = tk.Button(frame_bottom, text="Add Job", command=add_job)
-add_button.grid(row=3, column=0, columnspan=2, pady=10)
+add_button.grid(row=5, column=0, columnspan=2, pady=10)
 
 # Display initial jobs
 display_jobs(job_data)
+
+# Run the map generation
+generate_map(job_data)
 
 root.mainloop()
