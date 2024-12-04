@@ -55,3 +55,28 @@ def save_job(job_list):
         writer = csv.writer(file)
         writer.writerow(["Job Title", "Company", "Location"])
         writer.writerows(job_list)
+
+def load_jobs():
+    """Load job data from a CSV file."""
+    try:
+        with open("jobs.csv", "r") as file:
+            reader = csv.reader(file)
+            return list(reader)[1:]  # Skip header
+    except FileNotFoundError:
+        return []
+
+# Search and sort functions
+def search_jobs(jobs, keyword):
+    """Search for jobs by keyword in the title."""
+    return [job for job in jobs if keyword.lower() in job[0].lower()]
+
+def sort_jobs(jobs):
+    """Sort jobs alphabetically by location."""
+    return sorted(jobs, key=lambda x: x[2])
+
+# GUI functionality
+def display_jobs(jobs):
+    """Clear and display jobs in the treeview."""
+    tree.delete(*tree.get_children())
+    for row in jobs:
+        tree.insert("", "end", values=row)
