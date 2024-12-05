@@ -1,7 +1,7 @@
 # The app name is : Job Search App
 
 # GitHub Repository
-The source code for this project is available on GitHub: https://github.com/xxyy
+The source code for this project is available on GitHub: https://github.com/aliciazavy/jobapp-as.git
 
 ## Identification
 - **Name:DIB ALICIA SARA
